@@ -47,8 +47,8 @@ function getEpisodesBySearch (search, episodes) {
  */
 function getEpisodesByIndex (search, episodes) {
   const numSearch = Number(search)
-  if (episodes.length < numSearch || numSearch < 1 || !numSearch || !episodes) return []
-  return episodes.filter((episode, index, allEpisodes) => (allEpisodes.length - index) === numSearch)
+  if (episodes.length < numSearch || numSearch < 0 || (numSearch !== 0 && !numSearch) || !episodes) return []
+  return [episodes[numSearch]]
 }
 
 /**
@@ -57,6 +57,14 @@ function getEpisodesByIndex (search, episodes) {
  * @return {Object}
  */
 function getEpisodeObj (episode) {
+  if (!episode.title || !episode.description || !episode['itunes:duration'] || !episode.enclosure) {
+    return {
+      title: undefined,
+      description: undefined,
+      duration: undefined,
+      url: undefined
+    }
+  }
   return {
     title: episode.title.text,
     description: episode.description.cdata,

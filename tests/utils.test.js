@@ -41,6 +41,7 @@ describe('/utils', () => {
       })
       it('should correctly set default items perPage', () => {
         getPaginatedEpisodes(testArray, 1).should.have.lengthOf(10)
+        getPaginatedEpisodes(testArray, null).should.have.lengthOf(10)
       })
       it('should throw TypeError', () => {
         (() => { getPaginatedEpisodes('testingError') })
@@ -49,20 +50,88 @@ describe('/utils', () => {
     })
 
     describe('getEpisodesBySearch()', () => {
-      it('should', () => {
+      let testArray;
+      beforeEach(() => {
+        testArray = Array.from({ length: 100 }, (val, index) => ({
+          title: {
+            text: `TITLE_${index}`
+          }
+        }))
+      })
+      afterEach(() => {
+        testArray = undefined
+      })
 
+      it('should return an array', () => {
+        getEpisodesBySearch('', testArray).should.be.an('array')
+        getEpisodesBySearch('title_', testArray).should.be.an('array')
+        getEpisodesBySearch('TITLE_1', testArray).should.be.an('array')
+      })
+      it('should return an empty array', () => {
+        getEpisodesBySearch('not in array', testArray).should.have.lengthOf(0)
+        getEpisodesBySearch('', testArray).should.have.lengthOf(0)
+        getEpisodesBySearch('', []).should.have.lengthOf(0)
       })
     })
 
     describe('getEpisodesByIndex()', () => {
-      it('should', () => {
+      let testArray;
+      beforeEach(() => {
+        testArray = Array.from({ length: 100 }, (val, index) => index + 1)
+      })
+      afterEach(() => {
+        testArray = undefined
+      })
 
+      it('should return an array', () => {
+        getEpisodesByIndex(1, testArray).should.be.an('array')
+        getEpisodesByIndex(-1, testArray).should.be.an('array')
+        getEpisodesByIndex(200, testArray).should.be.an('array')
+      })
+      it('should return an empty array', () => {
+        getEpisodesByIndex(-1, testArray).should.have.lengthOf(0)
+        getEpisodesByIndex(200, testArray).should.have.lengthOf(0)
+        getEpisodesByIndex(undefined, testArray).should.have.lengthOf(0)
+        getEpisodesByIndex(1, []).should.have.lengthOf(0)
+      })
+      it('should return the correct index', () => {
+        getEpisodesByIndex(0, testArray)[0].should.be.equal(1)
       })
     })
 
     describe('getEpisodeObj()', () => {
-      it('should', () => {
+      let testArray;
+      beforeEach(() => {
+        testArray = Array.from({ length: 100 }, (val, index) => ({
+          title: { text: `TITLE_${index}` },
+          description: { cdata: `DESCRIPTION_${index}` },
+          'itunes:duration': { text: `DURATION_${index}` },
+          enclosure: { attributes: { url: `URL_${index}`}}
+        }))
+      })
+      afterEach(() => {
+        testArray = undefined
+      })
 
+      it('should return an object', () => {
+        const testEpisode = testArray[0]
+        getEpisodeObj(testEpisode).should.be.an('object')
+        getEpisodeObj({}).should.be.an('object')
+      })
+      it('should return a condensed object', () => {
+        const testEpisode = testArray[0]
+        getEpisodeObj(testEpisode).should.have.keys([
+          'title',
+          'description',
+          'duration',
+          'url'
+        ])
+        getEpisodeObj({}).should.have.keys([
+          'title',
+          'description',
+          'duration',
+          'url'
+        ])
       })
     })
   })
