@@ -4,6 +4,7 @@
   "description": "An unofficial MBMBAM RSS XML to JSON api.",
   "main": "handler.js",
   "dependencies": {
+    "fs-extra": "^5.0.0",
     "request": "^2.85.0",
     "request-promise-native": "^1.0.5",
     "xml-js": "^1.6.2"
@@ -16,8 +17,8 @@
     "sinon": "^4.5.0"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/_mocha server/**/*.test.js",
-    "coverage": "istanbul cover _mocha server/**/*.test.js"
+    "test": "./node_modules/mocha/bin/_mocha tests/**/*.test.js",
+    "coverage": "istanbul cover _mocha tests/**/*.test.js"
   },
   "author": "Eric Julius",
   "license": "ISC"
