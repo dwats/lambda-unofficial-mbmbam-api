@@ -1,0 +1,69 @@
+
+/**
+ * Get "page" from episodes array with a length set by `perPage` global const.
+ * @param {Array} episodes
+ * @param {Number} page
+ * @return {Array}
+ */
+function getPaginatedEpisodes (episodes, page = 1, perPage = 10) {
+  if (page === null) page = 1
+  const lastPage = Math.ceil(episodes.length / perPage)
+  if (page > lastPage) return []
+
+  const start = (perPage * page) - perPage
+  const end = start + perPage
+
+  return episodes.slice(start, end)
+}
+
+/**
+ * Search episodes array and return episodes where titles include search term
+ * @param {String} search - Search term
+ * @param {Array} episodes - Array of episodes to search witin
+ * @return {Array} Episodes that matched search term
+ */
+function getEpisodesBySearch (search, episodes) {
+  if (!search || !episodes) return []
+  const lowerSearch = search.toLowerCase()
+  return episodes.filter((episode) => {
+    const title = episode.title.text.toLowerCase()
+    return title.indexOf(lowerSearch) > -1
+  })
+}
+
+/**
+ * Find episode at specific index and return
+ *
+ * While this technically finds the correct episode number, it may not match up with
+ * the episode number in the title. For a more episode title accurate search use
+ * the `search` query.
+ * @param {Number} search
+ * @param {Array} episodes
+ * @return {Array}
+ */
+function getEpisodesByIndex (search, episodes) {
+  const numSearch = Number(search)
+  if (episodes.length < numSearch || numSearch < 1 || !numSearch || !episodes) return []
+  return episodes.filter((episode, index, allEpisodes) => (allEpisodes.length - index) === numSearch)
+}
+
+/**
+ * Get simplified episode object
+ * @param {Object} episode
+ * @return {Object}
+ */
+function getEpisodeObj (episode) {
+  return {
+    title: episode.title.text,
+    description: episode.description.cdata,
+    duration: episode['itunes:duration'].text,
+    url: episode.enclosure.attributes.url
+  }
+}
+
+module.exports = {
+  getEpisodeObj,
+  getEpisodesByIndex,
+  getEpisodesBySearch,
+  getPaginatedEpisodes
+}

@@ -1,0 +1,33 @@
+service: unofficial-mbmbam-episode-api
+
+provider:
+  name: aws
+  region: us-east-1
+  runtime: nodejs8.10
+
+package:
+  include:
+    - node_modules/**
+
+functions:
+  getEpisodes:
+    handler: handler.getEpisodes
+    memorySize: 256
+    events:
+      - http:
+          path: /episodes
+          method: get
+    environment:
+      RSS_URL: http://feeds.feedburner.com/mbmbam?format=xml
+      RESULTS_PER_PAGE: 10
+
+  getLatestEpisode:
+    handler: handler.getLatestEpisode
+    memorySize: 256
+    events:
+      - http:
+          path: /episodes/latest
+          method: get
+    environment:
+      RSS_URL: http://feeds.feedburner.com/mbmbam?format=xml
+      RESULTS_PER_PAGE: 10

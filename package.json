@@ -1,0 +1,24 @@
+{
+  "name": "lambda-unofficial-mbmbam-api",
+  "version": "1.0.0",
+  "description": "An unofficial MBMBAM RSS XML to JSON api.",
+  "main": "handler.js",
+  "dependencies": {
+    "request": "^2.85.0",
+    "request-promise-native": "^1.0.5",
+    "xml-js": "^1.6.2"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "istanbul": "^0.4.5",
+    "mocha": "^5.1.1",
+    "rewire": "^4.0.1",
+    "sinon": "^4.5.0"
+  },
+  "scripts": {
+    "test": "./node_modules/mocha/bin/_mocha server/**/*.test.js",
+    "coverage": "istanbul cover _mocha server/**/*.test.js"
+  },
+  "author": "Eric Julius",
+  "license": "ISC"
+}
