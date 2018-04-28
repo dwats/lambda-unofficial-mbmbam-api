@@ -1,12 +1,16 @@
 
 /**
- * Get "page" from episodes array with a length set by `perPage` global const.
+ * Get `page` from `episodes` array with a length set by `perPage` global const.
  * @param {Array} episodes
  * @param {Number} page
+ * @param {Number} perPage
  * @return {Array}
  */
 function getPaginatedEpisodes (episodes, page = 1, perPage = 10) {
   if (page === null) page = 1
+  if (!Array.isArray(episodes)) throw new TypeError('episodes must be an array')
+  if (page < 1) return []
+
   const lastPage = Math.ceil(episodes.length / perPage)
   if (page > lastPage) return []
 
