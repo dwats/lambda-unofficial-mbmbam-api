@@ -30,7 +30,7 @@ function getEpisodesBySearch (search, episodes) {
   if (!search || !episodes) return []
   const lowerSearch = search.toLowerCase()
   return episodes.filter((episode) => {
-    const title = episode.title.text.toLowerCase()
+    const title = episode.title.toLowerCase()
     return title.indexOf(lowerSearch) > -1
   })
 }
@@ -73,9 +73,35 @@ function getEpisodeObj (episode) {
   }
 }
 
+/**
+ * Parse raw rss object and return a simplified channel object
+ *
+ * @param {Object} rssObj
+ * @return {Object}
+ */
+function getChannelObj (rssObj) {
+  if (!rssObj || !rssObj.rss || !rssObj.rss.channel || !rssObj.rss.channel.item) {
+    return {
+      icon: undefined,
+      channel: undefined,
+      episodes: []
+    }
+  }
+  const channel = rssObj.rss.channel.title
+  const icon = rssObj.rss.channel.image.url.text
+  const episodes = rssObj.rss.channel.item
+
+  return {
+    icon,
+    channel: channel.text,
+    episodes: episodes.map(getEpisodeObj)
+  }
+}
+
 module.exports = {
   getEpisodeObj,
   getEpisodesByIndex,
   getEpisodesBySearch,
-  getPaginatedEpisodes
+  getPaginatedEpisodes,
+  getChannelObj
 }

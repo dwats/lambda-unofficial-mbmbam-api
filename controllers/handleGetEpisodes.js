@@ -1,60 +1,39 @@
-const convert = require('xml-js')
-const request = require('request-promise-native')
-
 const translateError = require('../utils/error')
 const {
   getEpisodeObj,
   getEpisodesByIndex,
   getEpisodesBySearch,
-  getPaginatedEpisodes
+  getPaginatedEpisodes,
+  getChannelObj
 } = require('../utils/episodes')
 
-const url = process.env.RSS_URL
 const perPage = Number(process.env.RESULTS_PER_PAGE)
-const options = {
-  compact: true,
-  textKey: 'text',
-  cdataKey: 'cdata',
-  attributesKey: 'attributes'
-}
 
-module.exports = async function handleGetEpisodes (event, cache) {
+module.exports = function handleGetEpisodes (event, cache) {
+  if (!cache) return { message: 'cache error' }
+  const channel = getChannelObj(cache)
   const searchTerm = event.queryStringParameters && event.queryStringParameters.search
   const gotoPage = event.queryStringParameters && event.queryStringParameters.page
   const episodeIndex = event.queryStringParameters && event.queryStringParameters.number
+
+  // Early exit for malformed episode index filter
   const numberQueryExists = event.queryStringParameters && episodeIndex
   const numberQueryIsNaN = event.queryStringParameters && isNaN(Number(episodeIndex))
-  if (numberQueryExists && numberQueryIsNaN) return Promise.reject(translateError('Invalid query syntax'))
-
-  let rawJson = cache
-  if (!cache) {
-    const xml = await request(url)
-      .catch(translateError('Error fetching rss feed'))
-    rawJson = convert.xml2js(xml, options)
-    rawJson.rss.channel.item = [...rawJson.rss.channel.item.reverse()] // The episode list is in desc order, wanted asc
-  }
-  const channel = rawJson.rss.channel.title
-  const icon = rawJson.rss.channel.image.url.text
-  const episodes = rawJson.rss.channel.item
-
-  let matchingEpisodes = getPaginatedEpisodes(episodes, gotoPage, perPage)
-  if (searchTerm) matchingEpisodes = getEpisodesBySearch(searchTerm, episodes)
-  else if (episodeIndex) matchingEpisodes = getEpisodesByIndex(episodeIndex, episodes)
-  if (matchingEpisodes && !matchingEpisodes.length) return Promise.reject(translateError('Nothing here'))
-
-  const results = {
-    icon,
-    channel: channel.text,
-    episodes: matchingEpisodes.map(getEpisodeObj),
-    pages: Math.ceil(episodes.length / perPage),
-    page: gotoPage && Number(gotoPage) || 1
-  }
-  if (event.queryStringParameters) {
-    results.searchTerm = searchTerm || episodeIndex
+  if (numberQueryExists && numberQueryIsNaN) {
+    channel.episodes = []
+    channel.error = 'invalid `number` query'
+    return channel
   }
 
-  return {
-    results,
-    cache: cache || rawJson
-  }
+  // Handle search/filter
+  if (searchTerm) channel.episodes = getEpisodesBySearch(searchTerm, channel.episodes)
+  else if (episodeIndex) channel.episodes = getEpisodesByIndex(episodeIndex, channel.episodes)
+  if (event.queryStringParameters) channel.searchTerm = searchTerm || episodeIndex
+
+  // Handle Pagination
+  channel.page = gotoPage && Number(gotoPage) || 1
+  channel.pages = Math.ceil(channel.episodes.length / perPage)
+  channel.episodes = getPaginatedEpisodes(channel.episodes, gotoPage, perPage)
+
+  return channel
 }
