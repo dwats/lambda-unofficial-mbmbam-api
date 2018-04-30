@@ -1,25 +1,50 @@
 const { handleGetEpisodes, handleGetLatestEpisode } = require('./controllers')
+const cacheWarmer = require('./utils/cache-warmer')
 const translateError = require('./utils/error')
 const response = require('./utils/response')
 
-let cache;
+let cache
 
-module.exports.getEpisodes = async (event, context, callback) => {
+/**
+ * @todo finish testing
+ * @todo document api, installation, requirements,
+ */
+
+async function getEpisodes (event, context, callback) {
+  context.callbackWaitsForEmptyEventLoop = false
+  if (!cache) {
+    cache = await cacheWarmer()
+      .catch(translateError('Error warming cache'))
+  }
+
+  const channel = handleGetEpisodes(event, cache)
+  callback(null, response.success(channel))
+}
+
+async function getLatestEpisode (event, context, callback) {
+  context.callbackWaitsForEmptyEventLoop = false
+  if (!cache) {
+    cache = await cacheWarmer()
+      .catch(translateError('Error warming cache'))
+  }
+
+  const channel = handleGetLatestEpisode(cache)
+  callback(null, response.success(channel))
+}
+
+async function warmCache (event, context, callback) {
   context.callbackWaitsForEmptyEventLoop = false
 
-  const episodes = await handleGetEpisodes(event, cache)
-    .catch(translateError('Error getting episodes'))
+  if (!cache) {
+    cache = await cacheWarmer()
+      .catch(translateError('Error warming cache'))
+  }
 
-  cache = episodes.cache
-  callback(null, response.success(episodes.results))
-};
+  callback(null)
+}
 
-module.exports.getLatestEpisode = async (event, context, callback) => {
-  context.callbackWaitsForEmptyEventLoop = false
-
-  const episodes = await handleGetLatestEpisode(event, cache)
-    .catch(translateError('Error getting latest episode'))
-
-  cache = episodes.cache
-  callback(null, response.success(episodes.results))
-};
+module.exports = {
+  warmCache,
+  getEpisodes,
+  getLatestEpisode
+}
