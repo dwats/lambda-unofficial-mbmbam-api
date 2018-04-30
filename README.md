@@ -26,7 +26,7 @@ todo
 
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
-| 200 | ok | [/episodes 200 response](#episodes_200_response) |
+| 200 | ok | [/dev/episodes 200 response](#episodes_200_response) |
 
 ### /dev/episodes/latest
 ---
