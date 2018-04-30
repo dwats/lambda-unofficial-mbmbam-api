@@ -13,7 +13,7 @@ const should = chai.should()
 describe('/utils', () => {
   describe('/episodes.js', () => {
     describe('getPaginatedEpisodes()', () => {
-      let testArray;
+      let testArray
       beforeEach(() => {
         testArray = Array.from({ length: 100 }, (val, index) => index + 1)
       })
@@ -51,7 +51,7 @@ describe('/utils', () => {
     })
 
     describe('getEpisodesBySearch()', () => {
-      let testArray;
+      let testArray
       beforeEach(() => {
         testArray = Array.from({ length: 100 }, (val, index) => (
           { title: `TITLE_${index}` }
@@ -74,7 +74,7 @@ describe('/utils', () => {
     })
 
     describe('getEpisodesByIndex()', () => {
-      let testArray;
+      let testArray
       beforeEach(() => {
         testArray = Array.from({ length: 100 }, (val, index) => index + 1)
       })
@@ -99,13 +99,13 @@ describe('/utils', () => {
     })
 
     describe('getEpisodeObj()', () => {
-      let testArray;
+      let testArray
       beforeEach(() => {
         testArray = Array.from({ length: 100 }, (val, index) => ({
           title: { text: `TITLE_${index}` },
           description: { cdata: `DESCRIPTION_${index}` },
           'itunes:duration': { text: `DURATION_${index}` },
-          enclosure: { attributes: { url: `URL_${index}`}}
+          enclosure: { attributes: { url: `URL_${index}` } }
         }))
       })
       afterEach(() => {
@@ -135,12 +135,12 @@ describe('/utils', () => {
     })
 
     describe('getEpisodeObj()', () => {
-      let testObj;
+      let testObj
       beforeEach(() => {
         testObj = {
           rss: {
             channel: {
-            title: 'TEST_TITLE',
+              title: 'TEST_TITLE',
               image: {
                 url: {
                   text: 'TEST_ICON'
@@ -154,7 +154,7 @@ describe('/utils', () => {
           title: { text: `TITLE_${index}` },
           description: { cdata: `DESCRIPTION_${index}` },
           'itunes:duration': { text: `DURATION_${index}` },
-          enclosure: { attributes: { url: `URL_${index}`}}
+          enclosure: { attributes: { url: `URL_${index}` } }
         }))
       })
       afterEach(() => {
