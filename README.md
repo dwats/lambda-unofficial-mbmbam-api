@@ -26,7 +26,7 @@ todo
 
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
-| 200 | ok | [inline_response_200](#inline_response_200) |
+| 200 | ok | [/episodes 200 response](#episodes_200_response) |
 
 ### /dev/episodes/latest
 ---
@@ -42,12 +42,31 @@ todo
 
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
-| 200 | ok | [inline_response_200_1](#inline_response_200_1) |
+| 200 | ok | [/dev/episodes/latest 200 response](#episodes_latest_200_response) |
 
 ### Models
 ---
 
-### inline_response_200_episodes
+### episodes_200_response
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| icon | string | Podcast icon | No |
+| channel | string | Podcast channel name | No |
+| episodes | [ [episode array item](#episode_array_item) ] | paginated list of episodes | No |
+| page | integer | current page | No |
+| pages | integer | total page count | No |
+| searchTerm | string | term used with `?search=` or `?number=` parameters | No |
+
+### episodes_latest_200_response
+
+| Name | Type | Description | Required |
+| ---- | ---- | ----------- | -------- |
+| icon | string | Podcast icon | No |
+| channel | string | Podcast channel name | No |
+| episodes | [ [episode array item](#episode_array_item) ] | paginated list of episodes | No |
+
+### episode_array_item
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
@@ -55,22 +74,3 @@ todo
 | description | string | episode description | No |
 | duration | string | episode duration | No |
 | url | string | episode url | No |
-
-### inline_response_200_1
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| icon | string | Podcast icon | No |
-| channel | string | Podcast channel name | No |
-| episodes | [ [inline_response_200_episodes](#inline_response_200_episodes) ] | paginated list of episodes | No |
-
-### inline_response_200
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| icon | string | Podcast icon | No |
-| channel | string | Podcast channel name | No |
-| episodes | [ [inline_response_200_episodes](#inline_response_200_episodes) ] | paginated list of episodes | No |
-| page | integer | current page | No |
-| pages | integer | total page count | No |
-| searchTerm | string | term used with `?search=` or `?number=` parameters | No |
