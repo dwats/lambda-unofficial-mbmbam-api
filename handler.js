@@ -3,11 +3,9 @@ const cacheWarmer = require('./utils/cache-warmer')
 const translateError = require('./utils/error')
 const response = require('./utils/response')
 
-let cache;
+let cache
 
 /**
- * @todo add cache warmer handler and timer in yml
- * @todo refactor cache building and http request out of controllers and have them work directly with the cache instead
  * @todo finish testing
  * @todo document api, installation, requirements,
  */

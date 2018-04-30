@@ -1,6 +1,4 @@
-const translateError = require('../utils/error')
 const {
-  getEpisodeObj,
   getEpisodesByIndex,
   getEpisodesBySearch,
   getPaginatedEpisodes,
@@ -28,10 +26,10 @@ module.exports = function handleGetEpisodes (event, cache) {
   // Handle search/filter
   if (searchTerm) channel.episodes = getEpisodesBySearch(searchTerm, channel.episodes)
   else if (episodeIndex) channel.episodes = getEpisodesByIndex(episodeIndex, channel.episodes)
-  if (event.queryStringParameters) channel.searchTerm = searchTerm || episodeIndex
+  if (event.queryStringParameters && (searchTerm || episodeIndex)) channel.searchTerm = searchTerm || episodeIndex
 
   // Handle Pagination
-  channel.page = gotoPage && Number(gotoPage) || 1
+  channel.page = (gotoPage && Number(gotoPage)) || 1
   channel.pages = Math.ceil(channel.episodes.length / perPage)
   channel.episodes = getPaginatedEpisodes(channel.episodes, gotoPage, perPage)
 

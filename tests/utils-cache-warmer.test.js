@@ -9,12 +9,12 @@ const {
 
 const cacheWarmer = rewire('../utils/cache-warmer')
 chai.use(chaiAsPromised)
-const should = chai.should()
+const should = chai.should() // eslint-disable-line no-unused-vars
 
 describe('/utils', () => {
   describe('/cache-warmer.js', () => {
     describe('cacheWarmer()', () => {
-      let restoreCacheWarmer;
+      let restoreCacheWarmer
       beforeEach(() => {
         restoreCacheWarmer = cacheWarmer.__set__('request', mockRequest)
       })

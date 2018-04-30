@@ -1,5 +1,4 @@
-const translateError = require('../utils/error')
-const { getEpisodeObj, getChannelObj } = require('../utils/episodes')
+const { getChannelObj } = require('../utils/episodes')
 
 module.exports = function handleGetLatestEpisode (cache) {
   if (!cache) return { message: 'cache error' }
