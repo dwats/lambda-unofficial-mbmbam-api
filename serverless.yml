@@ -12,6 +12,7 @@ package:
 functions:
   getEpisodes:
     handler: handler.getEpisodes
+    description: Return object containing channel info and paginated episode list. Accepts `search`, `number`, `page` url queries.
     memorySize: 256
     events:
       - http:
@@ -23,6 +24,7 @@ functions:
 
   getLatestEpisode:
     handler: handler.getLatestEpisode
+    description: Return object containing channel info and latest episode.
     memorySize: 256
     events:
       - http:
@@ -31,3 +33,14 @@ functions:
     environment:
       RSS_URL: http://feeds.feedburner.com/mbmbam?format=xml
       RESULTS_PER_PAGE: 10
+
+  warmCache:
+    handler: handler.warmCache
+    memorySize: 256
+    events:
+      - schedule:
+          description: cache warmer for the unofficial mbmbam rss api
+          rate: rate(5 minutes)
+          enabled: true
+    environment:
+      RSS_URL: http://feeds.feedburner.com/mbmbam?format=xml
