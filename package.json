@@ -5,6 +5,7 @@
   "main": "handler.js",
   "dependencies": {
     "aws-sdk": "^2.229.1",
+    "qs": "^6.5.1",
     "request": "^2.85.0",
     "request-promise-native": "^1.0.5",
     "xml-js": "^1.6.2"

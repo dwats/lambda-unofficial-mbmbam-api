@@ -1,3 +1,5 @@
+const qs = require('qs')
+
 const {
   getEpisodesByIndex,
   getEpisodesBySearch,
@@ -33,5 +35,31 @@ module.exports = function handleGetEpisodes (event, cache) {
   channel.pages = Math.ceil(channel.episodes.length / perPage)
   channel.episodes = getPaginatedEpisodes(channel.episodes, gotoPage, perPage)
 
-  return channel
+  return {
+    ...getPrevNextUrl(event, channel.page, channel.pages),
+    ...channel
+  }
+}
+
+function getPrevNextUrl (event, currentPage, lastPage) {
+  const host = event.headers.Host
+  const path = event.requestContext.path
+  let qsp = event.queryStringParameters
+  let next = null
+  let prev = null
+
+  if (!qsp) qsp = {}
+
+  if (currentPage < lastPage) {
+    qsp.page = currentPage + 1
+    next = `https://${host}${path}?${qs.stringify(qsp)}`
+  }
+  if (currentPage > 1) {
+    qsp.page = currentPage - 1
+    prev = `https://${host}${path}?${qs.stringify(qsp)}`
+  }
+  return {
+    next,
+    prev
+  }
 }
