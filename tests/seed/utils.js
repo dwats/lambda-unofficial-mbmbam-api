@@ -1,11 +1,11 @@
 const fs = require('fs-extra')
 const path = require('path')
 
-function mockRequest () {
+async function mockRequest () {
   return fs.readFile(path.join(__dirname, 'data.xml'), 'utf-8')
 }
 
-const mockRequestReject = () => Promise.reject('test reject')
+const mockRequestReject = async () => Promise.reject('test reject')
 
 module.exports = {
   mockRequest,
