@@ -48,19 +48,9 @@ describe('/controllers', () => {
         cache = undefined
       })
       it('should return an object', () => {
-        let response = handleGetEpisodes({}, cache)
-        response.should.be.an('object').with.keys([
-          'icon',
-          'channel',
-          'episodes',
-          'page',
-          'pages'
-        ])
-
-        response = handleGetEpisodes({
-          queryStringParameters: {
-            search: 'brother'
-          }
+        let response = handleGetEpisodes({
+          headers: { Host: 'testing.com' },
+          requestContext: { path: '/testing' }
         }, cache)
         response.should.be.an('object').with.keys([
           'icon',
@@ -68,26 +58,14 @@ describe('/controllers', () => {
           'episodes',
           'page',
           'pages',
-          'searchTerm'
+          'next',
+          'prev'
         ])
 
         response = handleGetEpisodes({
-          queryStringParameters: {
-            page: 1
-          }
-        }, cache)
-        response.should.be.an('object').with.keys([
-          'icon',
-          'channel',
-          'episodes',
-          'page',
-          'pages'
-        ])
-
-        response = handleGetEpisodes({
-          queryStringParameters: {
-            number: 1
-          }
+          queryStringParameters: { search: 'brother' },
+          headers: { Host: 'testing.com' },
+          requestContext: { path: '/testing' }
         }, cache)
         response.should.be.an('object').with.keys([
           'icon',
@@ -95,7 +73,40 @@ describe('/controllers', () => {
           'episodes',
           'page',
           'pages',
-          'searchTerm'
+          'searchTerm',
+          'next',
+          'prev'
+        ])
+
+        response = handleGetEpisodes({
+          queryStringParameters: { page: 1 },
+          headers: { Host: 'testing.com' },
+          requestContext: { path: '/testing' }
+        }, cache)
+        response.should.be.an('object').with.keys([
+          'icon',
+          'channel',
+          'episodes',
+          'page',
+          'pages',
+          'next',
+          'prev'
+        ])
+
+        response = handleGetEpisodes({
+          queryStringParameters: { number: 1 },
+          headers: { Host: 'testing.com' },
+          requestContext: { path: '/testing' }
+        }, cache)
+        response.should.be.an('object').with.keys([
+          'icon',
+          'channel',
+          'episodes',
+          'page',
+          'pages',
+          'searchTerm',
+          'next',
+          'prev'
         ])
       })
 
