@@ -28,7 +28,7 @@
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/_mocha tests/**/*.test.js",
-    "coverage": "istanbul cover _mocha tests/**/*.test.js"
+    "coverage": "istanbul --include-all-sources cover _mocha tests/**/*.test.js"
   },
   "author": "Eric Julius",
   "license": "ISC"
