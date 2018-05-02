@@ -21,6 +21,7 @@
     "eslint-plugin-standard": "^3.1.0",
     "fs-extra": "^5.0.0",
     "istanbul": "^1.1.0-alpha.1",
+    "istanbul-coveralls": "^1.0.3",
     "mocha": "^5.1.1",
     "rewire": "^4.0.1",
     "sinon": "^4.5.0",
@@ -28,7 +29,7 @@
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/_mocha tests/**/*.test.js",
-    "coverage": "istanbul --include-all-sources cover _mocha tests/**/*.test.js"
+    "coverage": "istanbul --include-all-sources cover _mocha tests/**/*.test.js && istanbul-coveralls --no-rm"
   },
   "author": "Eric Julius",
   "license": "ISC"
