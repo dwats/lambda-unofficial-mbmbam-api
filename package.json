@@ -30,7 +30,7 @@
   "scripts": {
     "test": "_mocha tests/**/*.test.js",
     "coverage": "istanbul --include-all-sources cover _mocha tests/**/*.test.js",
-    "circleci-coverage": "istanbul --include-all-sources cover _mocha tests/**/*.test.js -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+    "coveralls-coverage": "istanbul --include-all-sources cover _mocha tests/**/*.test.js -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "author": "Eric Julius",
   "license": "ISC"
