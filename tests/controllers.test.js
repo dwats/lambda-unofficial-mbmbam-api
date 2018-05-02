@@ -1,12 +1,15 @@
+process.env.RESULTS_PER_PAGE = 10
+
 const chai = require('chai')
 const rewire = require('rewire')
 
 const { mockRequest } = require('./seed/utils')
+const controllers = require('../controllers')
 const handleGetEpisodes = require('../controllers/handleGetEpisodes')
 const handleGetLatestEpisode = require('../controllers/handleGetLatestEpisodes')
 
 const cacheWarmer = rewire('../utils/cache-warmer')
-const should = chai.should() // eslint-disable-line no-unused-vars
+chai.should()
 let cache
 let restoreCacheWarmer
 
@@ -18,6 +21,15 @@ after(() => {
 })
 
 describe('/controllers', () => {
+  describe('/index.js', () => {
+    it('should be an object with keys', () => {
+      controllers.should.be.an('object').and.has.keys([
+        'handleGetEpisodes',
+        'handleGetLatestEpisode'
+      ])
+    })
+  })
+
   describe('/handleGetLatestEpisode.js', () => {
     describe('handleGetLatestEpisode()', () => {
       beforeEach(async () => {
@@ -129,6 +141,44 @@ describe('/controllers', () => {
           'error'
         ])
         response.episodes.should.have.lengthOf(0)
+      })
+
+      it('should return object with next property set', () => {
+        const response = handleGetEpisodes({
+          headers: {
+            Host: 'testing.com',
+            'CloudFront-Forwarded-Proto': 'http'
+          },
+          queryStringParameters: {
+            page: 1
+          },
+          cacheWarming: false,
+          requestContext: {
+            path: '/test'
+          }
+        }, cache)
+
+        response.should.include.key('next')
+        response.next.should.be.equal('http://testing.com/test?page=2')
+      })
+
+      it('should return object with prev property set', () => {
+        const response = handleGetEpisodes({
+          headers: {
+            Host: 'testing.com',
+            'CloudFront-Forwarded-Proto': 'http'
+          },
+          queryStringParameters: {
+            page: 2
+          },
+          cacheWarming: false,
+          requestContext: {
+            path: '/test'
+          }
+        }, cache)
+
+        response.should.include.key('prev')
+        response.prev.should.be.equal('http://testing.com/test?page=1')
       })
     })
   })

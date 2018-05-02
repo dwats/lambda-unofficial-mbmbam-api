@@ -42,6 +42,7 @@ module.exports = function handleGetEpisodes (event, cache) {
 function getPrevNextUrl (event, currentPage, lastPage) {
   const host = event.headers.Host
   const path = event.requestContext.path
+  const proto = event.headers['CloudFront-Forwarded-Proto']
   let qsp = event.queryStringParameters
   let next = null
   let prev = null
@@ -50,11 +51,11 @@ function getPrevNextUrl (event, currentPage, lastPage) {
 
   if (currentPage < lastPage) {
     qsp.page = currentPage + 1
-    next = `https://${host}${path}?${qs.stringify(qsp)}`
+    next = `${proto}://${host}${path}?${qs.stringify(qsp)}`
   }
   if (currentPage > 1) {
     qsp.page = currentPage - 1
-    prev = `https://${host}${path}?${qs.stringify(qsp)}`
+    prev = `${proto}://${host}${path}?${qs.stringify(qsp)}`
   }
   return {
     next,

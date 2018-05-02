@@ -1,5 +1,6 @@
 const fs = require('fs-extra')
 const path = require('path')
+const convert = require('xml-js')
 
 async function mockRequest () {
   return fs.readFile(path.join(__dirname, 'data.xml'), 'utf-8')
@@ -25,11 +26,30 @@ function mockTranslateError (msg) {
   }
 }
 
+async function mockCacheWarmer () {
+  const options = {
+    compact: true,
+    textKey: 'text',
+    cdataKey: 'cdata',
+    attributesKey: 'attributes'
+  }
+  const xml = await mockRequest()
+    .catch((e) => {
+      console.log('error fetching test data')
+      console.log(e)
+    })
+
+  const cache = convert.xml2js(xml, options)
+  cache.rss.channel.item = [...cache.rss.channel.item.reverse()]
+
+  return cache
+}
 
 module.exports = {
   mockRequest,
   mockRequestReject,
   mockLambdaInvokerSuccess,
   mockLambdaInvokerError,
-  mockTranslateError
+  mockTranslateError,
+  mockCacheWarmer
 }

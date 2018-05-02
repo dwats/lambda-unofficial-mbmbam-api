@@ -8,7 +8,7 @@ const {
   mockLambdaInvokerSuccess,
   mockLambdaInvokerError,
   mockTranslateError
- } = require('./seed/utils')
+} = require('./seed/utils')
 
 chai.should()
 chai.use(sinonChai)

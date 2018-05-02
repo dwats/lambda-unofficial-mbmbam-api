@@ -16,7 +16,7 @@ module.exports = async function getEpisodes (event, context, callback) {
       .catch(translateError('Error warming cache'))
   }
 
-  if (event.cacheWarming) callback(null, 'done')
+  if (event.cacheWarming) return callback(null, 'done')
   const channel = handleGetEpisodes(event, cache)
   callback(null, response.success(channel))
 }
