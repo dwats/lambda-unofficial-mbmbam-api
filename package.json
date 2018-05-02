@@ -4,6 +4,8 @@
   "description": "An unofficial MBMBAM RSS XML to JSON api.",
   "main": "handler.js",
   "dependencies": {
+    "aws-sdk": "^2.229.1",
+    "qs": "^6.5.1",
     "request": "^2.85.0",
     "request-promise-native": "^1.0.5",
     "xml-js": "^1.6.2"
@@ -11,6 +13,7 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
+    "coveralls": "^3.0.1",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.11.0",
@@ -25,8 +28,9 @@
     "sinon-chai": "^3.0.0"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/_mocha tests/**/*.test.js",
-    "coverage": "istanbul cover _mocha tests/**/*.test.js"
+    "test": "_mocha tests/**/*.test.js",
+    "coverage": "istanbul --include-all-sources cover _mocha tests/**/*.test.js",
+    "coveralls-coverage": "istanbul --include-all-sources cover _mocha tests/**/*.test.js -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "author": "Eric Julius",
   "license": "ISC"

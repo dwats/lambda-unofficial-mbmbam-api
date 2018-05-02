@@ -8,7 +8,7 @@ const {
   getChannelObj
 } = require('../utils/episodes')
 
-const should = chai.should()
+chai.should()
 
 describe('/utils', () => {
   describe('/episodes.js', () => {

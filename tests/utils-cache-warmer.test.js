@@ -4,12 +4,13 @@ const rewire = require('rewire')
 
 const {
   mockRequest,
-  mockRequestReject
+  mockRequestReject,
+  mockTranslateError
 } = require('./seed/utils')
 
 const cacheWarmer = rewire('../utils/cache-warmer')
 chai.use(chaiAsPromised)
-const should = chai.should() // eslint-disable-line no-unused-vars
+chai.should()
 
 describe('/utils', () => {
   describe('/cache-warmer.js', () => {
@@ -41,7 +42,9 @@ describe('/utils', () => {
       it('should throw on request rejection', async () => {
         restoreCacheWarmer()
         restoreCacheWarmer = cacheWarmer.__set__('request', mockRequestReject)
+        const restoreTranslateError = cacheWarmer.__set__('translateError', mockTranslateError)
         cacheWarmer().should.be.rejectedWith(Error, 'Error fetching rss feed')
+        restoreTranslateError()
       })
     })
   })

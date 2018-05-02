@@ -2,8 +2,7 @@ const chai = require('chai')
 
 const response = require('../utils/response')
 
-const should = chai.should()
-
+chai.should()
 
 describe('/utils', () => {
   describe('/response.js', () => {
