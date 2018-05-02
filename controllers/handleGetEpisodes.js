@@ -1,3 +1,5 @@
+const qs = require('qs')
+
 const {
   getEpisodesByIndex,
   getEpisodesBySearch,
@@ -27,11 +29,36 @@ module.exports = function handleGetEpisodes (event, cache) {
   if (searchTerm) channel.episodes = getEpisodesBySearch(searchTerm, channel.episodes)
   else if (episodeIndex) channel.episodes = getEpisodesByIndex(episodeIndex, channel.episodes)
   if (event.queryStringParameters && (searchTerm || episodeIndex)) channel.searchTerm = searchTerm || episodeIndex
-
-  // Handle Pagination
   channel.page = (gotoPage && Number(gotoPage)) || 1
   channel.pages = Math.ceil(channel.episodes.length / perPage)
-  channel.episodes = getPaginatedEpisodes(channel.episodes, gotoPage, perPage)
 
-  return channel
+  return {
+    ...getPrevNextUrl(event, channel.page, channel.pages),
+    ...channel,
+    episodes: getPaginatedEpisodes(channel.episodes, gotoPage, perPage)
+  }
+}
+
+function getPrevNextUrl (event, currentPage, lastPage) {
+  const host = event.headers.Host
+  const path = event.requestContext.path
+  const proto = event.headers['CloudFront-Forwarded-Proto']
+  let qsp = event.queryStringParameters
+  let next = null
+  let prev = null
+
+  if (!qsp) qsp = {}
+
+  if (currentPage < lastPage) {
+    qsp.page = currentPage + 1
+    next = `${proto}://${host}${path}?${qs.stringify(qsp)}`
+  }
+  if (currentPage > 1) {
+    qsp.page = currentPage - 1
+    prev = `${proto}://${host}${path}?${qs.stringify(qsp)}`
+  }
+  return {
+    next,
+    prev
+  }
 }

@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/dwats/lambda-unofficial-mbmbam-api.svg?style=svg)](https://circleci.com/gh/dwats/lambda-unofficial-mbmbam-api)
+
 # Purpose
 todo
 
