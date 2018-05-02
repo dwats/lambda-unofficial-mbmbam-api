@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/dwats/lambda-unofficial-mbmbam-api.svg?branch=master)](https://travis-ci.org/dwats/lambda-unofficial-mbmbam-api)
-[![Coverage Status](https://coveralls.io/repos/github/dwats/lambda-unofficial-mbmbam-api/badge.svg?branch=handler-rebuild)](https://coveralls.io/github/dwats/lambda-unofficial-mbmbam-api?branch=handler-rebuild)
+[![Coverage Status](https://coveralls.io/repos/github/dwats/lambda-unofficial-mbmbam-api/badge.svg?branch=master)](https://coveralls.io/github/dwats/lambda-unofficial-mbmbam-api?branch=master)
 
 # Purpose
 todo
