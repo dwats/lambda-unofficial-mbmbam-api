@@ -2,19 +2,30 @@
 [![Coverage Status](https://coveralls.io/repos/github/dwats/lambda-unofficial-mbmbam-api/badge.svg?branch=master)](https://coveralls.io/github/dwats/lambda-unofficial-mbmbam-api?branch=master)
 
 # Purpose
-todo
+I needed a backend for a personal [My Brother, My Brother and Me](http://www.maximumfun.org/shows/my-brother-my-brother-and-me) podcast listening application where I didn't have to deal with any of that pesky XML.
+This started out as an [ExpressJS](https://expressjs.com/) server side application but [Amazon AWS Lambda](https://aws.amazon.com/lambda/) seemed like the cheaper and more interesting choice.
 
-# Setup
-todo
+# Deployment
+This project is designed to be deployed using [Serverless](https://serverless.com/framework/docs/providers/aws/guide/).
 
-# Usage
-todo
+```shell
+$ serverless deploy [--aws-profile ProfileName]
+```
 
-# API Spec
+# Testing
+Testing is accomplished using [Mocha](https://mochajs.org/), [Chai](http://www.chaijs.com/), [Rewire](https://github.com/jhnns/rewire) and [Sinon](http://sinonjs.org/). Coverage reports are handled by [Istanbul](https://istanbul.js.org/).
 
-### /dev/episodes
+```shell
+$ npm run test
+```
+```shell
+$ npm run Coverage
+```
+# API Documentation
+
+## /dev/episodes
 ---
-##### ***GET***
+### ***GET***
 **Summary:** Podcast channel information and paginated episodes array
 
 **Parameters**
@@ -31,9 +42,9 @@ todo
 | ---- | ----------- | ------ |
 | 200 | ok | [/dev/episodes 200 response](#episodes_200_response) |
 
-### /dev/episodes/latest
+## /dev/episodes/latest
 ---
-##### ***GET***
+### ***GET***
 **Summary:** Podcast channel and latest episode information
 
 **Parameters**
@@ -47,7 +58,7 @@ todo
 | ---- | ----------- | ------ |
 | 200 | ok | [/dev/episodes/latest 200 response](#episodes_latest_200_response) |
 
-### Models
+## Models
 ---
 
 ### episodes_200_response
