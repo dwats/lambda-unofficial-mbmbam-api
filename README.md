@@ -19,7 +19,7 @@ Testing is accomplished using [Mocha](https://mochajs.org/), [Chai](http://www.c
 $ npm run test
 ```
 ```shell
-$ npm run Coverage
+$ npm run coverage
 ```
 # API Documentation
 
