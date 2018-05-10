@@ -5,6 +5,12 @@
 I needed a backend for a personal [My Brother, My Brother and Me](http://www.maximumfun.org/shows/my-brother-my-brother-and-me) podcast listening application where I didn't have to deal with any of that pesky XML.
 This started out as an [ExpressJS](https://expressjs.com/) server side application but [Amazon AWS Lambda](https://aws.amazon.com/lambda/) seemed like the cheaper and more interesting choice.
 
+# Live Demo
+* [/episodes](https://2vb1l1d0i6.execute-api.us-east-1.amazonaws.com/dev/episodes)
+* [/episodes?search=dad](https://2vb1l1d0i6.execute-api.us-east-1.amazonaws.com/dev/episodes?search=dad)
+* [/episodes?page=2](https://2vb1l1d0i6.execute-api.us-east-1.amazonaws.com/dev/episodes?page=2)
+* [/episodes/latest](https://2vb1l1d0i6.execute-api.us-east-1.amazonaws.com/dev/episodes/latest)
+
 # Deployment
 This project is designed to be deployed using [Serverless](https://serverless.com/framework/docs/providers/aws/guide/).
 
